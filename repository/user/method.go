@@ -9,8 +9,10 @@ import (
 	"time"
 
 	"github.com/funmi4194/ecommerce/database"
+	"github.com/funmi4194/ecommerce/enum"
 	"github.com/funmi4194/ecommerce/primer"
 	"github.com/funmi4194/ecommerce/reflection"
+	"github.com/funmi4194/ecommerce/types"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/schema"
 )
@@ -94,4 +96,18 @@ func (u *User) FByKeyVal(key string, val interface{}, preloadandjoin ...bool) er
 
 func (u *User) Execute(q string, args ...interface{}) error {
 	return database.PostgreSQLDB.NewRaw(q, args...).Scan(context.Background(), u)
+}
+
+/*
+UByMap updates a user matching the key/value pairs provided in the map
+
+It returns an error if any
+*/
+func (u *User) UByMap(m types.SQLMaps) error {
+	query, args := database.MapsToSQuery(m)
+	if strings.Contains(query, string(enum.RETURNING)) {
+		return database.PostgreSQLDB.NewRaw(`UPDATE users `+query, args...).Scan(context.Background(), u)
+	}
+	_, err := database.PostgreSQLDB.NewRaw(`UPDATE users `+query, args...).Exec(context.Background())
+	return err
 }

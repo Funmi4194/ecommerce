@@ -5,8 +5,6 @@ import (
 
 	"github.com/funmi4194/ecommerce/helper"
 	userLogic "github.com/funmi4194/ecommerce/logic/user"
-
-	// userRepository "github.com/funmi4194/ecommerce/repository/user"
 	"github.com/funmi4194/ecommerce/types"
 	"github.com/opensaucerer/barf"
 )

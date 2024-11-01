@@ -15,4 +15,5 @@ func V1() {
 	barf.Hippocampus(authenticatedFrame).Hijack(middleware.Auth)
 
 	user.RegisterAuthRoutes(unauthenticedFrame)
+	user.RegisterAdminRoutes(authenticatedFrame)
 }

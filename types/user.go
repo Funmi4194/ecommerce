@@ -10,18 +10,6 @@ type Login struct {
 	Password string `json:"password"`
 }
 
-type Verification struct {
-	Email string `json:"email"`
-	Link  string `json:"link"`
-}
-
-type Confirmation struct {
-	Token string `json:"token"`
-}
-
-type PasswordRecovery struct {
-	Email    string `json:"email"`
-	Link     string `json:"link"`
-	Token    string `json:"token"`
-	Password string `json:"password"`
+type AdminPayload struct {
+	UserID string `json:"user_id"`
 }

@@ -95,6 +95,7 @@ func Register(payload types.User) (*userRepository.User, error) {
 	return &user, nil
 }
 
+// Login sign in a user
 func Login(payload types.Login) (*userRepository.User, error) {
 
 	if payload.Email == "" {
