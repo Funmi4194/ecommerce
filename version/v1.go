@@ -19,4 +19,5 @@ func V1() {
 	user.RegisterAdminRoutes(authenticatedFrame)
 
 	product.RegisterProductRoutes(authenticatedFrame)
+	product.RegisterStorageRoutes(authenticatedFrame)
 }

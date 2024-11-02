@@ -19,4 +19,6 @@ type Env struct {
 	JWTSecret string `barfenv:"key=JWT_SECRET;required=true"`
 	// GoogleApplicationCredentials is the path to the google application credentials
 	GoogleApplicationCredentials string `barfenv:"key=GOOGLE_APPLICATION_CREDENTIALS;required=true"`
+	// OriginalBucket is the bucket for the cloud storage
+	OriginalBucket string `barfenv:"key=ORIGINAL_BUCKET;required=true"`
 }
