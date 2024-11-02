@@ -10,6 +10,7 @@ import (
 	"github.com/opensaucerer/barf"
 )
 
+// Publish is the controller function to create product or products
 func Publish(w http.ResponseWriter, r *http.Request) {
 
 	// get user from context
@@ -48,6 +49,7 @@ func Publish(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// UpdateProduct is the controller function to update a product
 func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 
 	// get user from context
@@ -86,6 +88,7 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// Products is the controller function to fetch products
 func Products(w http.ResponseWriter, r *http.Request) {
 
 	// get user from context
@@ -125,6 +128,7 @@ func Products(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// Product is the controller function to fetch a product by its Id
 func Product(w http.ResponseWriter, r *http.Request) {
 
 	userId := r.Context().Value(types.AuthCtxKey{}).(*user.User).ID
