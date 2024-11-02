@@ -1,6 +1,7 @@
 ﻿# E-commerce API
 This project is a RESTful API for an e-commerce application, built using Golang. It supports user authentication, product management, and order management with role-based access control.
 
+
 ## Features
 - User Management: Register and login with JWT authentication.
 - Product Management: CRUD operations for products (restricted to admin users).
@@ -9,13 +10,14 @@ This project is a RESTful API for an e-commerce application, built using Golang.
 - Validation & Error Handling: Complete input validation and appropriate HTTP status codes.
 - Swagger Documentation: Each endpoint is documented for easy reference.
 
+
 ## Prerequisites
 - Go 1.16+ installed on your machine.
 - A running instance of the E-commerce server.
 
 
 ## Installation
-To install and use the E-commerce server, first, clone the repository, install the dependencies, create a .env file in the project root and add the environmental variables in .env.example and then run the server
+To install and use the E-commerce server, first, clone the repository, install the dependencies, create a .env file in the project root and add the environmental variables as specified in .env.example and then run the server
 
 1. Clone this repository:
 ```bash
@@ -35,7 +37,31 @@ create .env file
 go run main.go
 ```
 
-## Render Workflow
 
+## Usage
+This API supports different roles with specific access rights. Be sure to log in with the correct credentials to access certain endpoints.
+
+
+## Exiting the Server
+To exit the server, simply press Ctrl + C 
+
+When the server disconnects, it will display the following message:
+```bash
+Shutting down BARF...
+http: Server closed
+```
+
+
+## Error Handling
+If an endpoint fails after running the request, you will see an error message with a red line indicating the issue.
+
+
+## Deployment
 - `RENDER_DEPLOY_HOOK` refers to the hook to trigger a render deployment for the service
-# ecommerce
+To deploy on Render, connect your GitHub repository, select Docker as the environment, and add environment variables as needed—Render will handle the rest"
+
+
+## Documentation
+The API is documented with Swagger. To view the documentation:
+1. Start the server.
+2. Open your browser and navigate to http://localhost:3000/swagger/index.html.
