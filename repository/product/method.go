@@ -189,13 +189,13 @@ func (p *Product) DByMap(m types.SQLMaps) error {
 }
 
 /*
-DByMapTx deletes a products matching the key/value pairs provided in the map
+DByMap deletes a collection products matching the key/value pairs provided in the map
 
 It returns an error if any
 */
-func (p *Product) DByMapTx(tx *bun.Tx, m types.SQLMaps) error {
+func (p *Products) DByMap(m types.SQLMaps) error {
 	query, args := database.MapsToWQuery(m)
-	_, err := tx.NewRaw(`DELETE FROM products WHERE `+query, args...).Exec(context.Background())
+	_, err := database.PostgreSQLDB.NewRaw(`DELETE FROM products WHERE `+query, args...).Exec(context.Background())
 	return err
 }
 

@@ -165,3 +165,41 @@ func Product(w http.ResponseWriter, r *http.Request) {
 		},
 	})
 }
+
+// DeleteProduct is the controller function to delete a product or products
+func DeleteProduct(w http.ResponseWriter, r *http.Request) {
+
+	// get user from context
+	userId := r.Context().Value(types.AuthCtxKey{}).(*user.User).ID
+
+	var data types.Delete
+	if err := barf.Request(r).Body().Format(&data); err != nil {
+		barf.Logger().Errorf(`[product.DeleteProduct] [barf.Request(r).Body().Format(&data)] %s`, err.Error())
+		barf.Response(w).Status(http.StatusBadRequest).JSON(barf.Res{
+			Status:  false,
+			Message: "We could not process your request at this time. Please try again later.",
+			Data:    nil,
+		})
+		return
+	}
+
+	err := product.DeleteProduct(userId, data)
+	if err != nil {
+		barf.Logger().Errorf(`[product.DeleteProduct] [product.DeleteProduct(userId, data)] %s`, err.Error())
+		barf.Response(w).Status(http.StatusBadRequest).JSON(barf.Res{
+			Status:  false,
+			Message: err.Error(),
+			Data:    nil,
+		})
+		return
+	}
+
+	// send response
+	barf.Response(w).Status(http.StatusCreated).JSON(barf.Res{
+		Status:  true,
+		Message: "Product(s) deleted sucessfully",
+		Data: types.M{
+			"token": helper.RefreshToken(userId),
+		},
+	})
+}

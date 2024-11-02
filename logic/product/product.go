@@ -64,13 +64,15 @@ func Publish(userId string, payload types.Publish) (*productRepository.Products,
 			return nil, errors.New("product stock should be greater than zero")
 		}
 
+		id := helper.GenerateUUID()
+
 		// ensure user provided the product image
 		if p.ProductUrl == "" {
 			return nil, errors.New("product image is required")
 		}
 
 		products = append(products, productRepository.Product{
-			ID:          helper.GenerateUUID(),
+			ID:          id,
 			Name:        p.Name,
 			Price:       p.Price,
 			Stock:       p.Stock,
@@ -83,7 +85,7 @@ func Publish(userId string, payload types.Publish) (*productRepository.Products,
 
 		insertMap.IMaps = append(insertMap.IMaps, types.SQLMap{
 			Map: map[string]interface{}{
-				"id":          helper.GenerateUUID(),
+				"id":          id,
 				"name":        p.Name,
 				"price":       p.Price,
 				"stock":       p.Stock,
@@ -283,7 +285,6 @@ func Products(userId string, payload types.ProductFilter) (*productRepository.Pr
 	// if user is an admin support status filter
 	if user.Role == enum.Admin {
 		if payload.Status != "" {
-			fmt.Println("hi")
 			EqFilter["status"] = payload.Status
 		}
 	} else {
@@ -398,4 +399,60 @@ func Products(userId string, payload types.ProductFilter) (*productRepository.Pr
 	}
 
 	return &products, pagination, nil
+}
+
+func DeleteProduct(userId string, payload types.Delete) error {
+	// create a new transaction
+	btx, err := commonRepository.BeginTx()
+	if err != nil {
+		return err
+	}
+	defer btx.Rollback()
+
+	user := userRepository.User{
+		ID: userId,
+	}
+
+	// find user by Id
+	err = user.FByKeyVal("id", user.ID, true)
+	if err != nil {
+		barf.Logger().Errorf(`[product.DeleteProduct] [user.FByKeyVal("id", user.ID, true)] %s`, err.Error())
+		if err == sql.ErrNoRows {
+			return errors.New("looks like your account no longer exists. please contact support")
+		}
+		return errors.New("we're having issues deleting products. please try again later")
+	}
+
+	if user.Role != enum.Admin {
+		return errors.New("you do not have the permission to this feature")
+	}
+
+	itemIds := []interface{}{}
+	for _, item := range payload.Products {
+		if item.ProductId != "" {
+			itemIds = append(itemIds, item.ProductId)
+		}
+	}
+
+	products := make(productRepository.Products, 0)
+
+	if len(itemIds) > 0 {
+		if err := products.DByMap(types.SQLMaps{
+			WMaps: []types.SQLMap{
+				{
+					Map: map[string]interface{}{
+						"products.id": itemIds,
+					},
+					JoinOperator:       enum.And,
+					ComparisonOperator: enum.In,
+				},
+			},
+			WJoinOperator: enum.And,
+		}); err != nil {
+			barf.Logger().Errorf(`[product.Delete] [product.DByMap(types.SQLMaps{] %s`, err.Error())
+			return errors.New("we're having issues deleting products. please try again later")
+		}
+	}
+
+	return nil
 }

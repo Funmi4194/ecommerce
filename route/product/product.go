@@ -10,7 +10,8 @@ func RegisterProductRoutes(frame *barf.SubRoute) {
 	frame = frame.RetroFrame("/products")
 
 	frame.Post("/publish", productController.Publish)
-	frame.Patch("/product", productController.UpdateProduct)
+	frame.Patch("/update", productController.UpdateProduct)
 	frame.Get("/product", productController.Product)
-	frame.Post("/", productController.Products)
+	frame.Delete("/delete", productController.DeleteProduct)
+	frame.Post("/list", productController.Products)
 }
