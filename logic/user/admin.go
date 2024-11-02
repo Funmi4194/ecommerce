@@ -31,9 +31,9 @@ func AddAdmin(userId string, payload types.AdminPayload) error {
 		return errors.New("we're having issues retrieving your account. please try again later")
 	}
 
-	// if user.Role != enum.Admin {
-	// 	return errors.New("you do not have the permission to add an admin")
-	// }
+	if user.Role != enum.Admin {
+		return errors.New("you do not have the permission to add an admin")
+	}
 
 	fmt.Println(payload.UserID)
 

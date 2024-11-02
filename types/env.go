@@ -17,12 +17,6 @@ type Env struct {
 	AppName primitive.String `barfenv:"key=APP_NAME;required=true"`
 	// Secret for generating JWT signatures
 	JWTSecret string `barfenv:"key=JWT_SECRET;required=true"`
-	//Email is the default email address for the app
-	EmailAddress string `barfenv:"key=EMAIL_ADDRESS;required=true"`
-	//App password for the default email address
-	EmailPassword string `barfenv:"key=EMAIL_PASSWORD;required=true"`
-	// Email Port is Port for stmp host
-	EmailPort string `barfenv:"key=EMAIL_PORT;required=true"`
-	// Email SMTP is the smtp host
-	EmailSMTP string `barfenv:"key=EMAIL_SMTP;required=true"`
+	// GoogleApplicationCredentials is the path to the google application credentials
+	GoogleApplicationCredentials string `barfenv:"key=GOOGLE_APPLICATION_CREDENTIALS;required=true"`
 }

@@ -2,6 +2,7 @@ package version
 
 import (
 	"github.com/funmi4194/ecommerce/middleware"
+	"github.com/funmi4194/ecommerce/route/product"
 	"github.com/funmi4194/ecommerce/route/user"
 	"github.com/opensaucerer/barf"
 )
@@ -16,4 +17,6 @@ func V1() {
 
 	user.RegisterAuthRoutes(unauthenticedFrame)
 	user.RegisterAdminRoutes(authenticatedFrame)
+
+	product.RegisterProductRoutes(authenticatedFrame)
 }

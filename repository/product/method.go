@@ -12,14 +12,6 @@ import (
 	"github.com/uptrace/bun"
 )
 
-// // Validate validates the product struct
-// func (p *Product) Prepare() error {
-// 	if p.Stock <= 0 {
-// 		return fmt.Errorf("product stock must be greater than %d", primer.ZeroValue)
-// 	}
-// 	return nil
-// }
-
 /* Fields returns the struct fields as a slice of interface{} values */
 func (p *Product) Fields() []interface{} {
 	return reflection.ReturnStructFields(p)
@@ -33,6 +25,19 @@ It returns an error if any
 func (p *Product) Create(m types.SQLMaps) error {
 	query, args := database.MapsToIQuery(m)
 	if _, err := database.PostgreSQLDB.NewRaw(`INSERT INTO products `+query, args...).Exec(context.Background()); err != nil && err != sql.ErrNoRows {
+		return err
+	}
+	return nil
+}
+
+/*
+Create inserts a new product or products into the database using the provided product
+
+It returns an error if any
+*/
+func (p *Product) CreateTx(tx *bun.Tx, m types.SQLMaps) error {
+	query, args := database.MapsToIQuery(m)
+	if _, err := tx.NewRaw(`INSERT INTO products `+query, args...).Exec(context.Background()); err != nil && err != sql.ErrNoRows {
 		return err
 	}
 	return nil
@@ -68,12 +73,12 @@ It returns an error if any
 */
 func (p *Products) FByKeyVal(key string, val interface{}, limit, offset int, sort string, preloadandjoin ...bool) error {
 	if len(preloadandjoin) > 1 && preloadandjoin[0] && preloadandjoin[1] {
-		return database.PostgreSQLDB.NewRaw(`SELECT * FROM products WHERE products.`+key+` = ? ORDER BY assets.updated_at `+sort+` LIMIT ? OFFSET ?`, val, limit, offset).Scan(context.Background(), preloadandjoin)
+		return database.PostgreSQLDB.NewRaw(`SELECT * FROM products WHERE products.`+key+` = ? ORDER BY products.updated_at `+sort+` LIMIT ? OFFSET ?`, val, limit, offset).Scan(context.Background(), preloadandjoin)
 	}
 	if len(preloadandjoin) > 0 && preloadandjoin[0] {
-		return database.PostgreSQLDB.NewRaw(`SELECT * FROM products WHERE `+key+` = ? ORDER BY assets.updated_at `+sort+` LIMIT ? OFFSET ?`, val, limit, offset).Scan(context.Background(), p)
+		return database.PostgreSQLDB.NewRaw(`SELECT * FROM products WHERE `+key+` = ? ORDER BY products.updated_at `+sort+` LIMIT ? OFFSET ?`, val, limit, offset).Scan(context.Background(), p)
 	}
-	return database.PostgreSQLDB.NewRaw(`SELECT id, name FROM products WHERE `+key+` = ? ORDER BY assets.updated_at `+sort+` LIMIT ? OFFSET ?`, val, limit, offset).Scan(context.Background(), p)
+	return database.PostgreSQLDB.NewRaw(`SELECT id, name FROM products WHERE `+key+` = ? ORDER BY products.updated_at `+sort+` LIMIT ? OFFSET ?`, val, limit, offset).Scan(context.Background(), p)
 }
 
 /*
@@ -156,6 +161,23 @@ func (p *Product) CByMap(m types.SQLMaps) (int, error) {
 }
 
 /*
+CByMap finds and counts all products matching the key/value pairs provided in the map
+
+It returns an error if any
+*/
+func (p *Products) CByMap(m types.SQLMaps) (int, error) {
+	var count int
+	query, args := database.MapsToWQuery(m)
+	if query != "" {
+		query = `SELECT count(*) FROM products WHERE ` + query
+	} else {
+		query = `SELECT count(*) FROM products`
+	}
+	err := database.PostgreSQLDB.NewRaw(query, args...).Scan(context.Background(), &count)
+	return count, err
+}
+
+/*
 DByMap deletes a collection products matching the key/value pairs provided in the map
 
 It returns an error if any
@@ -188,16 +210,17 @@ It returns an error if any
 */
 func (p *Products) FByMap(m types.SQLMaps, limit, offset int, sort string, preloadandjoin ...bool) error {
 	query, args := database.MapsToWQuery(m)
+	oquery := database.MapsToOQuery(m)
 	if len(m.Args) > 0 {
 		args = append(m.Args, args...)
 	}
 	if len(preloadandjoin) > 1 && preloadandjoin[0] && preloadandjoin[1] {
 		if query != "" {
 			// join clause can come in here
-			query = `SELECT * FROM products ORDER BY products.updated_at ` + sort + ` LIMIT ? OFFSET ?`
+			query = `SELECT * FROM products WHERE ` + query + oquery + ` LIMIT ? OFFSET ?`
 		} else {
 			// join clause can come in here
-			query = `SELECT * FROM products WHERE ` + query + ` ORDER BY products.updated_at ` + sort + ` LIMIT ? OFFSET ?`
+			query = `SELECT * FROM products WHERE ` + oquery + ` LIMIT ? OFFSET ?`
 		}
 		rows, err := database.PostgreSQLDB.QueryContext(context.Background(), query, append(args, limit, offset)...)
 		if err != nil {

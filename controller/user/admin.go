@@ -10,6 +10,7 @@ import (
 	"github.com/opensaucerer/barf"
 )
 
+// AddAdmin is the controller function to add an admin user
 func AddAdmin(w http.ResponseWriter, r *http.Request) {
 
 	// get user from context
