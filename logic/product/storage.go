@@ -17,6 +17,7 @@ import (
 	"github.com/opensaucerer/barf"
 )
 
+// Store allows the upload of image file
 func Store(fs []*multipart.FileHeader, userId string) ([]types.Object, error) {
 
 	user := userRepository.User{

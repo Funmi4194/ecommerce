@@ -10,6 +10,7 @@ import (
 	"github.com/opensaucerer/barf"
 )
 
+// Store is the controller function to upload a product file
 func Store(w http.ResponseWriter, r *http.Request) {
 
 	// get user from context
