@@ -160,12 +160,12 @@ func UpdateProduct(userId string, payload types.UpdateProduct) (*productReposito
 		"updated_at": bun.NullTime{Time: time.Now()},
 	}
 
-	if payload.Status != "" {
-		query["status"] = payload.Status
+	if payload.Status != nil {
+		query["status"] = &payload.Status
 	}
 
-	if payload.Name != "" {
-		query["name"] = payload.Name
+	if payload.Name != nil {
+		query["name"] = &payload.Name
 	}
 
 	if payload.Price != nil {
@@ -176,12 +176,12 @@ func UpdateProduct(userId string, payload types.UpdateProduct) (*productReposito
 		query["stock"] = &payload.Stock
 	}
 
-	if payload.ProductUrl != "" {
-		query["product_url"] = payload.ProductUrl
+	if payload.ProductUrl != nil {
+		query["product_url"] = &payload.ProductUrl
 	}
 
-	if payload.Description != "" {
-		query["description"] = payload.Description
+	if payload.Description != nil {
+		query["description"] = &payload.Description
 	}
 
 	if err := product.UByMapTx(btx, types.SQLMaps{

@@ -21,13 +21,13 @@ type Product struct {
 }
 
 type UpdateProduct struct {
-	ProductId   string             `json:"product_id"`
-	Name        string             `json:"name"`
-	Price       *float64           `json:"price"`
-	Stock       *int64             `json:"stock"`
-	ProductUrl  string             `json:"product_url"`
-	Status      enum.ProductStatus `json:"status"`
-	Description string             `json:"description"`
+	ProductId   string              `json:"product_id"`
+	Name        *string             `json:"name"`
+	Price       *float64            `json:"price"`
+	Stock       *int64              `json:"stock"`
+	ProductUrl  *string             `json:"product_url"`
+	Status      *enum.ProductStatus `json:"status"`
+	Description *string             `json:"description"`
 }
 
 type ProductFilter struct {
