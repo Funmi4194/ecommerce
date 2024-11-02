@@ -1,6 +1,6 @@
-# syntax = docker/dockerfile:1.2
+# syntax = docker/dockerfile:1.2 
 
-FROM golang:1.21-alpine
+FROM golang:1.22.5-alpine
 ENV CGO_ENABLED=0
 
 # # define build args and environment variables
@@ -12,7 +12,7 @@ ENV VERSION 1.0.0
 # mount env file - Render cloud stores .env secrets in this location hence the need to mount unto the docker image
 RUN --mount=type=secret,id=_env,dst=/etc/secrets/.env cat /etc/secrets/.env
 
-WORKDIR /app
+WORKDIR /main
 COPY . .
 
 RUN go mod download
