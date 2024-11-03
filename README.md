@@ -58,7 +58,7 @@ If an endpoint fails after running the request, you will see an error message wi
 
 ## Deployment
 - `RENDER_DEPLOY_HOOK` refers to the hook to trigger a render deployment for the service
-To deploy on Render, connect your GitHub repository, select Docker as the environment, and add environment variables as needed—Render will handle the rest"
+To deploy on Render, connect your GitHub repository, select Docker as the environment, and add environment variables as needed—Render will handle the rest.
 
 
 ## Documentation
