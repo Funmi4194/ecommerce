@@ -30,7 +30,7 @@ go mod tidy
 ```
 3. Create a .env file
 ```bash
-create .env file
+cp .env.example .env
 ```
 4. Run the server
 ```bash

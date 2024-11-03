@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// I have a plan to make a package from this called nanites. Basically, nanites will expose multi primitives implemented in the Go way. https://github.com/opensaucerer/nanites
+// I have a plan to make a package from this called nanites.
 type StringArray []string
 
 // ExistsIn reports whether any of the elements of sa is contained in t.
@@ -36,6 +36,17 @@ func (sa *StringArray) Scan(src interface{}) error {
 func (sa StringArray) Value() (driver.Value, error) {
 	b, err := json.Marshal(sa)
 	return string(b), err
+}
+
+// Find returns the first element in sa that satisfies the provided testing function.
+// Otherwise nil is returned.
+func (sa StringArray) Find(fn func(interface{}) bool) interface{} {
+	for _, v := range sa {
+		if fn(v) {
+			return v
+		}
+	}
+	return nil
 }
 
 type Array []interface{}
