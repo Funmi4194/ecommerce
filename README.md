@@ -64,4 +64,4 @@ To deploy on Render, connect your GitHub repository, select Docker as the enviro
 ## Documentation
 The API is documented with Swagger. To view the documentation:
 1. Start the server.
-2. Open your browser and navigate to http://localhost:3000/swagger/index.html.
+2. Open your browser and navigate to [https://app.swaggerhub.com/apis-docs/Instashop-project/E-commerce/1.0.0]
