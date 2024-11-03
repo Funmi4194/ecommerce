@@ -13,6 +13,7 @@ type Order struct {
 	UserID string `bun:"user_id" json:"user_id"`
 
 	Status      enum.OrderStatus `bun:"status" json:"status"`
+	Reference   string           `bun:"reference" json:"reference"`
 	Paid        bool             `bun:"paid" json:"paid"`
 	PaidAt      bun.NullTime     `bun:"paid_at" json:"paid_at"`
 	Cancelled   bool             `bun:"cancelled" json:"cancelled"`
@@ -56,3 +57,5 @@ type Item struct {
 	// the metadata for the item (can also be a json string)
 	Metadata string `json:"metadata"`
 }
+
+type Orders []Order

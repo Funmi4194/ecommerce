@@ -11,9 +11,15 @@ const (
 	// pending
 	Pending OrderStatus = "PENDING"
 
-	// canceled
-	Canceled OrderStatus = "CANCELED"
+	// Cancelled denotes an order cancelled                                       by an admin and user
+	Cancelled OrderStatus = "CANCELLED"
 
-	// completed
+	// Approved denotes an order completed by an admin
 	Completed OrderStatus = "COMPLETED"
+
+	// Rejected demotes an order rejected by an admin
+	Rejected OrderStatus = "REJECTED"
+
+	// Approved denotes an order approved by an admin
+	Approved OrderStatus = "APPROVED"
 )

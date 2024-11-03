@@ -2,6 +2,7 @@ package version
 
 import (
 	"github.com/funmi4194/ecommerce/middleware"
+	"github.com/funmi4194/ecommerce/route/order"
 	"github.com/funmi4194/ecommerce/route/product"
 	"github.com/funmi4194/ecommerce/route/user"
 	"github.com/opensaucerer/barf"
@@ -20,4 +21,6 @@ func V1() {
 
 	product.RegisterProductRoutes(authenticatedFrame)
 	product.RegisterStorageRoutes(authenticatedFrame)
+
+	order.RegisterOrderRoutes(authenticatedFrame)
 }

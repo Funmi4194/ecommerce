@@ -214,6 +214,7 @@ func (p *Products) FByMap(m types.SQLMaps, limit, offset int, sort string, prelo
 	if len(m.Args) > 0 {
 		args = append(m.Args, args...)
 	}
+
 	if len(preloadandjoin) > 1 && preloadandjoin[0] && preloadandjoin[1] {
 		if query != "" {
 			// join clause can come in here

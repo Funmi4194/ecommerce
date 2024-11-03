@@ -3,7 +3,6 @@ package user
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 
 	"github.com/funmi4194/ecommerce/enum"
 	userRepository "github.com/funmi4194/ecommerce/repository/user"
@@ -35,8 +34,6 @@ func AddAdmin(userId string, payload types.AdminPayload) error {
 		return errors.New("you do not have the permission to add an admin")
 	}
 
-	fmt.Println(payload.UserID)
-
 	// find user by ID
 	err = user.FByKeyVal("id", payload.UserID, true)
 	if err != nil {
@@ -47,12 +44,10 @@ func AddAdmin(userId string, payload types.AdminPayload) error {
 		return errors.New("we're having issues adding user as admin. please try again later")
 	}
 
-	fmt.Println("hi")
 	if user.Role == enum.Admin {
 		return errors.New("user already have access to admin feature")
 	}
 
-	fmt.Println(user.ID)
 	// add user to admin
 	err = user.UByMap(types.SQLMaps{
 		WMaps: []types.SQLMap{

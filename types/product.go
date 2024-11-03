@@ -1,8 +1,9 @@
 package types
 
 import (
+	"time"
+
 	"github.com/funmi4194/ecommerce/enum"
-	"github.com/uptrace/bun"
 )
 
 type Publish struct {
@@ -39,8 +40,8 @@ type ProductFilter struct {
 	MaxAmount *int64             `json:"max_amount"`
 	Status    enum.ProductStatus `json:"status"`
 
-	StartDate bun.NullTime `json:"start_date"`
-	EndDate   bun.NullTime `json:"end_date"`
+	StartDate time.Time `json:"start_date"`
+	EndDate   time.Time `json:"end_date"`
 
 	// searches on name, description
 	Search string `json:"search"`
