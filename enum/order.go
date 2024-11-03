@@ -6,7 +6,6 @@ func (o OrderStatus) String() string {
 	return string(o)
 }
 
-// Currency describes the currency of a transaction
 const (
 	// pending
 	Pending OrderStatus = "PENDING"

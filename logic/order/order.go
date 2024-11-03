@@ -204,7 +204,7 @@ func InitiateOrder(userId string, payload types.InitiateOrder) (*orderRepository
 	// commit transaction
 	if err := btx.Commit(); err != nil {
 		barf.Logger().Errorf(`[creation.Checkout] [btx.Commit()] %s`, err.Error())
-		return nil, errors.New("we're having issues checking out those assets. please try again later")
+		return nil, errors.New("we're having issues initiating order. please try again later")
 	}
 
 	return &o, nil
@@ -433,7 +433,7 @@ func UpdateOrder(userId string, payload types.UpdateOrder) (*orderRepository.Ord
 	// commit transaction
 	if err := btx.Commit(); err != nil {
 		barf.Logger().Errorf(`[order.CancelOrder] [btx.Commit()] %s`, err.Error())
-		return nil, errors.New("we're having issues cancelling order. please try again later")
+		return nil, errors.New("we're having issues updating the order. please try again later")
 	}
 
 	return &order, nil
